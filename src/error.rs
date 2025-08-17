@@ -2,4 +2,19 @@
 pub enum Error {
     #[error(transparent)]
     ConfigError(#[from] twelf::Error),
+
+    #[error(transparent)]
+    ProviderError(#[from] alloy::transports::TransportError),
+
+    #[error(transparent)]
+    TypeError(#[from] alloy::sol_types::Error),
+
+    #[error("Block number is None")]
+    BlockNumberError,
+
+    #[error(transparent)]
+    ContractAddressError(#[from] const_hex::FromHexError),
+    
+    #[error(transparent)]
+    BlockTagError(#[from] alloy::eips::eip1898::ParseBlockNumberError),
 }
