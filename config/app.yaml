@@ -1,0 +1,10 @@
+log:
+  level: INFO
+api:
+  port: 9080
+db:
+  url: sqlite://zama.sqlite?mode=rwc
+indexer:
+  rpc_url: "wss://ethereum-rpc.publicnode.com"
+  contract_address: "dAC17F958D2ee523a2206206994597C13D831ec7"
+  block_tag: "Finalized"

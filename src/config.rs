@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use twelf::{config, Layer};
 
-pub type AppResult<T> = std::result::Result<T, error::Error>;
+pub type AppResult<T> = Result<T, error::Error>;
 
 pub fn load(path: PathBuf) -> AppResult<Config> {
     let path = path.into();
@@ -19,6 +19,7 @@ pub struct Config {
     pub log: Log,
     pub api: API,
     pub db: Database,
+    pub indexer: Indexer,
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]
@@ -34,4 +35,11 @@ pub struct Database {
 #[derive(Debug, Default, Deserialize, Serialize)]
 pub struct API {
     pub port: u16,
+}
+
+#[derive(Debug, Default, Deserialize, Serialize)]
+pub struct Indexer {
+    pub rpc_url: String,
+    pub contract_address: String,
+    pub block_tag: String,
 }
