@@ -2,7 +2,7 @@ use crate::error;
 
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
-use twelf::{config, Layer};
+use twelf::{Layer, config};
 
 pub type AppResult<T> = Result<T, error::Error>;
 
@@ -27,7 +27,7 @@ pub struct Log {
     pub level: String,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Database {
     pub url: String,
 }

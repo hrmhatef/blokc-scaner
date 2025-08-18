@@ -9,8 +9,8 @@ pub enum Error {
     #[error(transparent)]
     TypeError(#[from] alloy::sol_types::Error),
 
-    #[error("Block number is None")]
-    BlockNumberError,
+    #[error("Block field {0} is invalid or empty")]
+    BlockInfoError(String),
 
     #[error(transparent)]
     ContractAddressError(#[from] const_hex::FromHexError),
@@ -20,4 +20,7 @@ pub enum Error {
 
     #[error(transparent)]
     DatabaseError(#[from] sea_orm::DbErr),
+
+    #[error(transparent)]
+    ConvertError(#[from] std::num::TryFromIntError),
 }
