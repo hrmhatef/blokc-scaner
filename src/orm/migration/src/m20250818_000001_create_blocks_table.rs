@@ -17,14 +17,14 @@ impl MigrationTrait for Migration {
                     .table(Blocks::Table)
                     .col(
                         ColumnDef::new(Blocks::Id)
-                            .big_integer()
+                            .big_unsigned()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Blocks::BlockNumber).big_integer().not_null())
+                    .col(ColumnDef::new(Blocks::BlockNumber).big_unsigned().not_null())
                     .col(ColumnDef::new(Blocks::Hash).string().not_null())
-                    .col(ColumnDef::new(Blocks::Timestamp).big_integer())
+                    .col(ColumnDef::new(Blocks::Timestamp).big_unsigned())
                     .col(ColumnDef::new(Blocks::Tag).string().not_null())
                     .col(ColumnDef::new(Blocks::IsRemoved).boolean().not_null())
                     .to_owned(),

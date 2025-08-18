@@ -20,19 +20,20 @@ impl MigrationTrait for Migration {
                     .table(Transactions::Table)
                     .col(
                         ColumnDef::new(Transactions::Id)
-                            .big_integer()
+                            .big_unsigned()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
+                    .col(ColumnDef::new(Transactions::BlockId).integer().not_null())
+                    .col(ColumnDef::new(Transactions::Hash).string().not_null())
+                    .col(ColumnDef::new(Transactions::TagIndex).big_unsigned().not_null())
                     .foreign_key(
                         ForeignKey::create()
                         .name("fk-blocks-transactions_id")
                         .from(Blocks::Table, Blocks::Id)
                         .to(Transactions::Table, Transactions::BlockId),
                     )
-                    .col(ColumnDef::new(Transactions::Hash).string().not_null())
-                    .col(ColumnDef::new(Transactions::TagIndex).integer().not_null())
                     .to_owned(),
             )
             .await
