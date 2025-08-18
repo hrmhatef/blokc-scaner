@@ -14,7 +14,10 @@ pub enum Error {
 
     #[error(transparent)]
     ContractAddressError(#[from] const_hex::FromHexError),
-    
+
     #[error(transparent)]
     BlockTagError(#[from] alloy::eips::eip1898::ParseBlockNumberError),
+
+    #[error(transparent)]
+    DatabaseError(#[from] sea_orm::DbErr),
 }

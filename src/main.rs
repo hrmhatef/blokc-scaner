@@ -2,6 +2,7 @@ mod cmd;
 mod error;
 mod config;
 mod indexer;
+mod database;
 
 use std::{path::PathBuf, str::FromStr};
 
