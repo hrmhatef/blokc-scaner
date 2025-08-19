@@ -7,23 +7,29 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    pub tx_id: i32,
     pub from: String,
     pub to: String,
     pub value: String,
     pub log_index: i64,
+    pub tx_id: i32,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
     #[sea_orm(
-        belongs_to = "Entity",
-        from = "Column::Id",
-        to = "Column::TxId",
+        belongs_to = "super::transactions::Entity",
+        from = "Column::TxId",
+        to = "super::transactions::Column::Id",
         on_update = "NoAction",
         on_delete = "NoAction"
     )]
-    SelfRef,
+    Transactions,
+}
+
+impl Related<super::transactions::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::Transactions.def()
+    }
 }
 
 impl ActiveModelBehavior for ActiveModel {}

@@ -19,27 +19,26 @@ impl MigrationTrait for Migration {
                     .table(Events::Table)
                     .col(
                         ColumnDef::new(Events::Id)
-                            .big_unsigned()
+                            .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Events::TxId).integer().not_null())
                     .col(ColumnDef::new(Events::From).string().not_null())
                     .col(ColumnDef::new(Events::To).string().not_null())
                     .col(ColumnDef::new(Events::Value).string().not_null())
                     .col(ColumnDef::new(Events::LogIndex).big_unsigned().not_null())
+                    .col(ColumnDef::new(Events::TxId).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
-                        .name("fk-transactions-events_id")
-                        .from(Transactions::Table, Transactions::Id)
-                        .to(Events::Table, Events::TxId),
+                        .name("fk-events-transactions_id")
+                        .from(Events::Table, Events::TxId)
+                        .to(Transactions::Table, Transactions::Id),
                     )
                     .to_owned(),
             )
             .await
     }
-
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
             .drop_table(Table::drop().table(Events::Table).to_owned())

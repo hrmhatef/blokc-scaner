@@ -17,7 +17,7 @@ impl MigrationTrait for Migration {
                     .table(Blocks::Table)
                     .col(
                         ColumnDef::new(Blocks::Id)
-                            .big_unsigned()
+                            .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key(),
