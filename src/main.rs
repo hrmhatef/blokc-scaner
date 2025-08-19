@@ -1,8 +1,8 @@
 mod cmd;
-mod error;
 mod config;
+mod error;
 mod indexer;
-mod database;
+mod orm;
 
 use std::{path::PathBuf, str::FromStr};
 
@@ -22,7 +22,17 @@ async fn main() -> AppResult<()> {
         .format_timestamp_secs()
         .init();
 
-    log::info!("hello zama");
+    log::info!(
+        "Trying to make a connection with the DB: {:}",
+        cfg.db.url.clone()
+    );
+    let db = orm::db::new(cfg.db).await?;
+    log::info!("Database is connected...");
 
-    indexer::run(cfg.indexer).await
+    indexer::run(cfg.indexer, &db).await?;
+
+    db.close().await?;
+    log::info!("The DB connection is closed");
+
+    Ok(())
 }
