@@ -7,6 +7,7 @@ pub struct Args {
     pub config_path: String,
 }
 
+#[must_use]
 pub fn parse() -> Args {
     Args::parse()
 }

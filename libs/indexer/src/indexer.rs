@@ -48,7 +48,7 @@ pub struct BlockInfo {
 
 impl BlockInfo {
     fn new_with_tag(tag: BlockNumberOrTag) -> BlockInfo {
-        BlockInfo{
+        BlockInfo {
             tag: Some(tag),
             ..Default::default()
         }

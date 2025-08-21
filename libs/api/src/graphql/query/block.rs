@@ -9,23 +9,49 @@ pub struct BlockQuery;
 
 #[Object]
 impl BlockQuery {
-    async fn blocks(&self, ctx: &Context<'_>) -> Result<GraphqlResult> {
+    async fn blocks(&self, ctx: &Context<'_>, block_number: i64) -> Result<BlocksInfo> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
-        let res = blocks_by_filter(db.clone()).await.unwrap();
 
-        Ok(GraphqlResult { data: res })
+        let res = blocks_by_filter(db.clone(), block_number).await?;
+
+        Ok(BlocksInfo { data: res })
     }
 
-    async fn get_total_blocks(&self, ctx: &Context<'_>) -> Result<u64> {
+    async fn blocks_by_address(&self, ctx: &Context<'_>, address: String) -> Result<BlocksInfo> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
 
-        Ok(get_total_blocks(db.clone()).await.unwrap())
+        let res = get_block_info_by_address(db.clone(), address).await?;
+
+        Ok(BlocksInfo { data: res })
+    }
+
+    async fn circular_trnasactions(
+        &self,
+        ctx: &Context<'_>,
+        address: String,
+    ) -> Result<BlocksInfo> {
+        let db = ctx.data_unchecked::<Arc<db::DB>>();
+
+        let res = get_circular_transactions(db.clone(), address).await?;
+
+        Ok(BlocksInfo { data: res })
+    }
+
+    async fn total_blocks(&self, ctx: &Context<'_>) -> Result<u64> {
+        let db = ctx.data_unchecked::<Arc<db::DB>>();
+
+        Ok(get_total_blocks(db.clone()).await?)
+    }
+
+    async fn total_events(&self, ctx: &Context<'_>) -> Result<u64> {
+        let db = ctx.data_unchecked::<Arc<db::DB>>();
+
+        Ok(get_total_events(db.clone()).await?)
     }
 }
 
-/// The `ShowsPage` result type
 #[derive(Clone, SimpleObject)]
-pub struct GraphqlResult {
+pub struct BlocksInfo {
     /// The list of `Shows` returned for the current page
     data: Vec<BlockResult>,
 }

@@ -1,11 +1,11 @@
 use crate::entities::prelude::*;
-use crate::entities::*;
+use crate::entities::{blocks, events, transactions};
 
 use utils::{config, result::AppResult};
 
 use std::sync::Arc;
 
-use sea_orm::*;
+use sea_orm::{Database, DatabaseConnection, EntityTrait};
 
 pub async fn new(db_config: config::Database) -> AppResult<DB> {
     let db = Database::connect(db_config.url).await?;
@@ -19,12 +19,13 @@ pub struct DB {
 }
 
 impl DB {
+    #[must_use]
     pub fn get_connection(&self) -> &DatabaseConnection {
         &self.connection
     }
 
     pub async fn close(&self) -> AppResult<()> {
-        let _ = &self.connection.close_by_ref().await?;
+        let () = &self.connection.close_by_ref().await?;
 
         Ok(())
     }
