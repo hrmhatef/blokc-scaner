@@ -18,7 +18,7 @@ async fn main() -> AppResult<()> {
         .format_timestamp_secs()
         .init();
 
-    log::info!("App will run by the following config:\n{:#?}", cfg);
+    log::info!("App will run by the following config:\n{cfg:#?}");
 
     log::info!(
         "Trying to make a connection with the DB: {:}",

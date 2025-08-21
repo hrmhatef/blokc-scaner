@@ -52,7 +52,7 @@ pub async fn blocks_by_filter(
         .and_also_related(Events)
         .order_by_asc(events::Column::Id)
         .filter(blocks::Column::BlockNumber.eq(23174921))
-        .all(&*db.get_connection())
+        .all(db.get_connection())
         .await?;
 
     let mut result: Vec<BlockResult> = vec![];
@@ -77,9 +77,9 @@ pub async fn blocks_by_filter(
         result.push(res);
     }
 
-    return Ok(result);
+    Ok(result)
 }
 
 pub async fn get_total_blocks(db: Arc<DB>) -> AppResult<u64> {
-    Ok(Blocks::find().count(&*db.get_connection()).await?)
+    Ok(Blocks::find().count(db.get_connection()).await?)
 }

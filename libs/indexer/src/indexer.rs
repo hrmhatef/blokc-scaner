@@ -48,10 +48,10 @@ pub struct BlockInfo {
 
 impl BlockInfo {
     fn new_with_tag(tag: BlockNumberOrTag) -> BlockInfo {
-        let mut block_info = BlockInfo::default();
-        block_info.tag = Some(tag);
-
-        block_info
+        BlockInfo{
+            tag: Some(tag),
+            ..Default::default()
+        }
     }
 
     fn flush(&mut self) {
@@ -94,7 +94,7 @@ impl BlockInfo {
             return true;
         }
 
-        return false;
+        false
     }
 
     pub fn set_block_id(&mut self, block_id: i32) -> AppResult<()> {
@@ -229,7 +229,7 @@ pub async fn run(cfg: config::Indexer, db_connection: db::DB) -> AppResult<()> {
     while let Some(log) = stream.next().await {
         block_info.set_block_info(&log)?;
         insert_data(&db_connection, &mut block_info, &log).await?;
-        log::info!("Data added into DB:\n{:#?}", block_info);
+        log::info!("Data added into DB:\n{block_info:#?}");
     }
 
     Ok(())
@@ -241,18 +241,18 @@ pub async fn insert_data(
     log: &alloy_rpc_types_eth::Log,
 ) -> AppResult<()> {
     if !block_info.has_block_id() {
-        let res = add_block_info(&db, block_info.try_into()?).await?;
+        let res = add_block_info(db, block_info.try_into()?).await?;
         block_info.set_block_id(res.id)?;
     }
 
-    if !block_info.has_tx_id() || block_info.is_new_tx(&log) {
-        block_info.set_tx_info(&log)?;
-        let res = add_tx_info(&db, block_info.try_into()?).await?;
+    if !block_info.has_tx_id() || block_info.is_new_tx(log) {
+        block_info.set_tx_info(log)?;
+        let res = add_tx_info(db, block_info.try_into()?).await?;
         block_info.set_tx_id(res.id);
     }
 
-    block_info.set_event_info(&log)?;
-    let res = add_event_info(&db, block_info.try_into()?).await?;
+    block_info.set_event_info(log)?;
+    let res = add_event_info(db, block_info.try_into()?).await?;
     block_info.set_event_id(res.id);
 
     Ok(())

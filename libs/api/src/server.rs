@@ -54,9 +54,9 @@ pub async fn run(ctx: Arc<Context>) -> AppResult<()> {
         )
         .with_state(schema);
 
-    log::info!("Playground: http://localhost:{:}/api/graphql", port);
+    log::info!("Playground: http://localhost:{port}/api/graphql");
 
-    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{:}", port)).await?;
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}")).await?;
     axum::serve(listener, router).await?;
 
     Ok(())

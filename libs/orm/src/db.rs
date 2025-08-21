@@ -31,7 +31,7 @@ impl DB {
 }
 
 pub async fn get_blocks_info(db: Arc<DB>, _filter: String) -> AppResult<Vec<blocks::Model>> {
-    let res = Blocks::find().all(&*db.get_connection()).await?;
+    let res = Blocks::find().all(db.get_connection()).await?;
 
     Ok(res)
 }
@@ -40,13 +40,13 @@ pub async fn get_transactions_info(
     db: Arc<DB>,
     _filter: String,
 ) -> AppResult<Vec<transactions::Model>> {
-    let res = Transactions::find().all(&*db.get_connection()).await?;
+    let res = Transactions::find().all(db.get_connection()).await?;
 
     Ok(res)
 }
 
 pub async fn get_events_info(db: Arc<DB>, _filter: String) -> AppResult<Vec<events::Model>> {
-    let res = Events::find().all(&*db.get_connection()).await?;
+    let res = Events::find().all(db.get_connection()).await?;
 
     Ok(res)
 }

@@ -5,7 +5,6 @@ use std::path::PathBuf;
 use twelf::{Layer, config};
 
 pub fn load(path: PathBuf) -> AppResult<Config> {
-    let path = path.into();
     // Layer from different sources to build configuration. Order matters!
     let conf = Config::with_layers(&[Layer::Yaml(path), Layer::Env(Some(String::from("APP_")))])?;
     Ok(conf)
