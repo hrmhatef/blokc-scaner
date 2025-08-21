@@ -1,2 +1,2 @@
-pub mod server;
 pub mod graphql;
+pub mod server;

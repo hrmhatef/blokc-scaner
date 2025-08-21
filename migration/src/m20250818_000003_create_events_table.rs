@@ -31,9 +31,9 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Events::TxId).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
-                        .name("fk-events-transactions_id")
-                        .from(Events::Table, Events::TxId)
-                        .to(Transactions::Table, Transactions::Id),
+                            .name("fk-events-transactions_id")
+                            .from(Events::Table, Events::TxId)
+                            .to(Transactions::Table, Transactions::Id),
                     )
                     .to_owned(),
             )
@@ -54,5 +54,5 @@ enum Events {
     From,
     To,
     Value,
-    LogIndex
+    LogIndex,
 }

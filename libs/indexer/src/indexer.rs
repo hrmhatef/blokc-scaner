@@ -1,5 +1,9 @@
-use utils::{result::AppResult, config, error::Error};
-use orm::{db, entities::{blocks, events, transactions}, entities::prelude::*};
+use orm::{
+    db,
+    entities::prelude::*,
+    entities::{blocks, events, transactions},
+};
+use utils::{config, error::Error, result::AppResult};
 
 use std::str::FromStr;
 
@@ -10,8 +14,8 @@ use alloy::{
     sol,
     sol_types::SolEvent,
 };
-use sea_orm::*;
 use futures_util::stream::StreamExt;
+use sea_orm::*;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -74,9 +78,16 @@ impl BlockInfo {
     }
 
     pub fn is_new_tx(&mut self, log: &alloy_rpc_types_eth::Log) -> bool {
-        let tx_index = log.transaction_index.ok_or(Error::BlockInfoError("transaction_index".to_string())).unwrap();
+        let tx_index = log
+            .transaction_index
+            .ok_or(Error::BlockInfoError("transaction_index".to_string()))
+            .unwrap();
         let new_tx_index = i64::try_from(tx_index).unwrap();
-        let new_tx_hash = log.transaction_hash.ok_or(Error::BlockInfoError("transactions_hash".to_string())).unwrap().to_string();
+        let new_tx_hash = log
+            .transaction_hash
+            .ok_or(Error::BlockInfoError("transactions_hash".to_string()))
+            .unwrap()
+            .to_string();
 
         if self.tx_info.tx_index != new_tx_index || self.tx_info.tx_hash != new_tx_hash {
             self.tx_info.tx_id = None;
@@ -95,8 +106,13 @@ impl BlockInfo {
     }
 
     pub fn set_tx_info(&mut self, log: &alloy_rpc_types_eth::Log) -> AppResult<()> {
-        let tx_hash = log.transaction_hash.ok_or(Error::BlockInfoError("transaction_hash".to_string()))?.to_string();
-        let tx_index = log.transaction_index.ok_or(Error::BlockInfoError("transaction_index".to_string()))?;
+        let tx_hash = log
+            .transaction_hash
+            .ok_or(Error::BlockInfoError("transaction_hash".to_string()))?
+            .to_string();
+        let tx_index = log
+            .transaction_index
+            .ok_or(Error::BlockInfoError("transaction_index".to_string()))?;
         self.tx_info.tx_hash = tx_hash.clone();
         self.tx_info.tx_index = i64::try_from(tx_index)?;
 
@@ -105,7 +121,9 @@ impl BlockInfo {
 
     pub fn set_event_info(&mut self, log: &alloy_rpc_types_eth::Log) -> AppResult<()> {
         let decoded_event = Transfer::decode_log(&log.inner)?;
-        let log_index = log.log_index.ok_or(Error::BlockInfoError("log_index".to_string()))?;
+        let log_index = log
+            .log_index
+            .ok_or(Error::BlockInfoError("log_index".to_string()))?;
         self.event_info.from = decoded_event.from.clone().to_string();
         self.event_info.to = decoded_event.to.clone().to_string();
         self.event_info.value = decoded_event.value.clone().to_string();
@@ -157,7 +175,10 @@ impl TryInto<events::Model> for &mut BlockInfo {
     fn try_into(self) -> AppResult<events::Model> {
         Ok(events::Model {
             id: 0,
-            tx_id: self.tx_info.tx_id.ok_or(Error::BlockInfoError("tx_id".to_string()))?,
+            tx_id: self
+                .tx_info
+                .tx_id
+                .ok_or(Error::BlockInfoError("tx_id".to_string()))?,
             from: self.event_info.from.clone().to_lowercase(),
             to: self.event_info.to.clone().to_lowercase(),
             value: self.event_info.value.clone().to_lowercase(),
@@ -172,7 +193,9 @@ impl TryInto<transactions::Model> for &mut BlockInfo {
     fn try_into(self) -> AppResult<transactions::Model> {
         Ok(transactions::Model {
             id: 0,
-            block_id: self.block_id.ok_or(Error::BlockInfoError("block_id".to_string()))?,
+            block_id: self
+                .block_id
+                .ok_or(Error::BlockInfoError("block_id".to_string()))?,
             hash: self.tx_info.tx_hash.clone(),
             tag_index: self.tx_info.tx_index,
         })
@@ -235,10 +258,7 @@ pub async fn insert_data(
     Ok(())
 }
 
-async fn add_block_info(
-    db: &db::DB,
-    block_info: blocks::Model,
-) -> AppResult<blocks::Model> {
+async fn add_block_info(db: &db::DB, block_info: blocks::Model) -> AppResult<blocks::Model> {
     let active_model = blocks::ActiveModel {
         block_number: Set(block_info.block_number),
         hash: Set(block_info.hash.to_owned()),
@@ -248,7 +268,9 @@ async fn add_block_info(
         ..Default::default()
     };
 
-    let res = Blocks::insert(active_model).exec(db.get_connection()).await?;
+    let res = Blocks::insert(active_model)
+        .exec(db.get_connection())
+        .await?;
 
     Ok(blocks::Model {
         id: res.last_insert_id,
@@ -256,10 +278,7 @@ async fn add_block_info(
     })
 }
 
-async fn add_tx_info(
-    db: &db::DB,
-    tx_info: transactions::Model,
-) -> AppResult<transactions::Model> {
+async fn add_tx_info(db: &db::DB, tx_info: transactions::Model) -> AppResult<transactions::Model> {
     let active_model = transactions::ActiveModel {
         block_id: Set(tx_info.block_id),
         hash: Set(tx_info.hash.clone()),
@@ -267,7 +286,9 @@ async fn add_tx_info(
         ..Default::default()
     };
 
-    let res = Transactions::insert(active_model).exec(db.get_connection()).await?;
+    let res = Transactions::insert(active_model)
+        .exec(db.get_connection())
+        .await?;
 
     Ok(transactions::Model {
         id: res.last_insert_id,
@@ -275,10 +296,7 @@ async fn add_tx_info(
     })
 }
 
-async fn add_event_info(
-    db: &db::DB,
-    event_info: events::Model,
-) -> AppResult<events::Model> {
+async fn add_event_info(db: &db::DB, event_info: events::Model) -> AppResult<events::Model> {
     let active_model = events::ActiveModel {
         tx_id: Set(event_info.tx_id),
         from: Set(event_info.from.clone()),
@@ -288,11 +306,12 @@ async fn add_event_info(
         ..Default::default()
     };
 
-    let res = Events::insert(active_model).exec(db.get_connection()).await?;
+    let res = Events::insert(active_model)
+        .exec(db.get_connection())
+        .await?;
 
     Ok(events::Model {
         id: res.last_insert_id,
         ..event_info
     })
 }
-

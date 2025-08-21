@@ -1,17 +1,17 @@
-use crate::graphql::schema::{build_schema, GraphQLSchema};
+use crate::graphql::schema::{GraphQLSchema, build_schema};
 
-use utils::{config, result::AppResult};
 use orm::db;
+use utils::{config, result::AppResult};
 
 use std::sync::Arc;
 
-use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
+use async_graphql::http::{GraphQLPlaygroundConfig, playground_source};
 use async_graphql_axum::{GraphQLRequest, GraphQLResponse};
 use axum::{
+    Router,
     extract::State,
     response::{Html, IntoResponse},
     routing::get,
-    Router,
 };
 
 /// Dependencies needed by the resolvers

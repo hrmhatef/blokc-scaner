@@ -1,4 +1,4 @@
-use orm::{db, blocks_query::*};
+use orm::{blocks_query::*, db};
 
 use std::sync::Arc;
 
@@ -13,9 +13,7 @@ impl BlockQuery {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
         let res = blocks_by_filter(db.clone()).await.unwrap();
 
-        Ok(
-            GraphqlResult { data: res }
-        )
+        Ok(GraphqlResult { data: res })
     }
 
     async fn get_total_blocks(&self, ctx: &Context<'_>) -> Result<u64> {

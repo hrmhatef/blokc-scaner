@@ -4,7 +4,7 @@ use crate::graphql::query::Query;
 
 use std::sync::Arc;
 
-use async_graphql::{EmptySubscription, EmptyMutation, Schema};
+use async_graphql::{EmptyMutation, EmptySubscription, Schema};
 
 pub type GraphQLSchema = Schema<Query, EmptyMutation, EmptySubscription>;
 

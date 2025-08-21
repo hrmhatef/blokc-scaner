@@ -22,7 +22,11 @@ impl MigrationTrait for Migration {
                             .auto_increment()
                             .primary_key(),
                     )
-                    .col(ColumnDef::new(Blocks::BlockNumber).big_unsigned().not_null())
+                    .col(
+                        ColumnDef::new(Blocks::BlockNumber)
+                            .big_unsigned()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Blocks::Hash).string().not_null())
                     .col(ColumnDef::new(Blocks::Timestamp).big_unsigned())
                     .col(ColumnDef::new(Blocks::Tag).string().not_null())
@@ -47,5 +51,5 @@ pub enum Blocks {
     Hash,
     Timestamp,
     Tag,
-    IsRemoved
+    IsRemoved,
 }

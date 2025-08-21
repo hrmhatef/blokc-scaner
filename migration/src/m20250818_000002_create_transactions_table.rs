@@ -10,7 +10,6 @@ impl MigrationName for Migration {
     }
 }
 
-
 #[async_trait::async_trait]
 impl MigrationTrait for Migration {
     async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
@@ -26,13 +25,17 @@ impl MigrationTrait for Migration {
                             .primary_key(),
                     )
                     .col(ColumnDef::new(Transactions::Hash).string().not_null())
-                    .col(ColumnDef::new(Transactions::TagIndex).big_unsigned().not_null())
+                    .col(
+                        ColumnDef::new(Transactions::TagIndex)
+                            .big_unsigned()
+                            .not_null(),
+                    )
                     .col(ColumnDef::new(Transactions::BlockId).integer().not_null())
                     .foreign_key(
                         ForeignKey::create()
-                        .name("fk-transactions-blocks_id")
-                        .from(Transactions::Table, Transactions::BlockId)
-                        .to(Blocks::Table, Blocks::Id),
+                            .name("fk-transactions-blocks_id")
+                            .from(Transactions::Table, Transactions::BlockId)
+                            .to(Blocks::Table, Blocks::Id),
                     )
                     .to_owned(),
             )
@@ -52,5 +55,5 @@ pub enum Transactions {
     Id,
     BlockId,
     Hash,
-    TagIndex
+    TagIndex,
 }

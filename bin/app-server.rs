@@ -1,5 +1,5 @@
-use utils::{result::AppResult, cmd, config};
 use api::server;
+use utils::{cmd, config, result::AppResult};
 
 use std::{path::PathBuf, str::FromStr, sync::Arc};
 
