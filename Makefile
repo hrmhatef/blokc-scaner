@@ -2,7 +2,11 @@ build:
 	cargo build
 
 format:
-	cargo fmt
+	cargo fmt --all --
+
+lint:
+	cargo clippy --all-targets --all-features --workspace
+
 
 migrate.status:
 	sea-orm-cli migrate status -u "sqlite://indexer.sqlite?mode=rwc" -d "migration/"
