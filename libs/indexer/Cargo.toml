@@ -1,0 +1,15 @@
+[package]
+name = "indexer"
+authors = ["Hatef Rahmani <rahmani.hatef@gmail.com>"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+alloy = { version = "1.0.25", features = ["full"] }
+alloy-rpc-types-eth = "1.0.25"
+futures-util = "0.3.31"
+log = "0.4.27"
+serde = "1.0.219"
+utils = { version = "0.1.0", path = "../utils" }
+orm = { version = "0.1.0", path = "../orm" }
+sea-orm = "1.1.14"

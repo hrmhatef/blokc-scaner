@@ -1,6 +1,6 @@
 /target
 *.lock
 
-src/orm/migration/target
+migration/target
 
 *.sqlite

@@ -23,4 +23,7 @@ pub enum Error {
 
     #[error(transparent)]
     ConvertError(#[from] std::num::TryFromIntError),
+
+    #[error(transparent)]
+    IoError(#[from] std::io::Error),
 }

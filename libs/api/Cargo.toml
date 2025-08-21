@@ -1,0 +1,14 @@
+[package]
+name = "api"
+authors = ["Hatef Rahmani <rahmani.hatef@gmail.com>"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-graphql = "7.0.17"
+async-graphql-axum = "7.0.17"
+axum = "0.8.4"
+log = "0.4.27"
+orm = { version = "0.1.0", path = "../orm" }
+tokio = "1.47.1"
+utils = { version = "0.1.0", path = "../utils" }

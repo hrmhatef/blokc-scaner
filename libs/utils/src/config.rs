@@ -1,10 +1,8 @@
-use crate::error;
+use crate::result::AppResult;
 
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 use twelf::{Layer, config};
-
-pub type AppResult<T> = Result<T, error::Error>;
 
 pub fn load(path: PathBuf) -> AppResult<Config> {
     let path = path.into();
@@ -14,7 +12,7 @@ pub fn load(path: PathBuf) -> AppResult<Config> {
 }
 
 #[config]
-#[derive(Debug, Default, Serialize)]
+#[derive(Debug, Clone, Default, Serialize)]
 pub struct Config {
     pub log: Log,
     pub api: API,
@@ -22,7 +20,7 @@ pub struct Config {
     pub indexer: Indexer,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Log {
     pub level: String,
 }
@@ -32,12 +30,12 @@ pub struct Database {
     pub url: String,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct API {
     pub port: u16,
 }
 
-#[derive(Debug, Default, Deserialize, Serialize)]
+#[derive(Debug, Clone, Default, Deserialize, Serialize)]
 pub struct Indexer {
     pub rpc_url: String,
     pub contract_address: String,

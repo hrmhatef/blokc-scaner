@@ -1,0 +1,12 @@
+[package]
+name = "orm"
+authors = ["Hatef Rahmani <rahmani.hatef@gmail.com>"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-graphql = "7.0.17"
+sea-orm = "1.1.14"
+serde = "1.0.219"
+utils = { version = "0.1.0", path = "../utils" }
+

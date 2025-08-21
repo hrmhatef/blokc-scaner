@@ -1,12 +1,8 @@
-mod cmd;
-mod config;
-mod error;
-mod indexer;
-mod orm;
+use utils::{result::AppResult, cmd, config};
+use api::server;
 
-use std::{path::PathBuf, str::FromStr};
+use std::{path::PathBuf, str::FromStr, sync::Arc};
 
-use config::AppResult;
 use env_logger::Builder;
 use log::LevelFilter;
 
@@ -22,14 +18,18 @@ async fn main() -> AppResult<()> {
         .format_timestamp_secs()
         .init();
 
+    log::info!("App will run by the following config:\n{:#?}", cfg);
+
     log::info!(
         "Trying to make a connection with the DB: {:}",
         cfg.db.url.clone()
     );
-    let db = orm::db::new(cfg.db).await?;
+    let db = orm::db::new(cfg.db.clone()).await?;
     log::info!("Database is connected...");
 
-    indexer::run(cfg.indexer, &db).await?;
+    let arc_db = Arc::new(db.clone());
+    let context = Arc::new(api::server::Context::init(cfg.api.clone(), arc_db).await?);
+    server::run(context).await?;
 
     db.close().await?;
     log::info!("The DB connection is closed");

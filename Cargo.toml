@@ -1,21 +1,25 @@
 [package]
-name = "eth-indexer"
+name = "block-scaner"
 authors = ["Hatef Rahmani <rahmani.hatef@gmail.com>"]
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "server"
+path = "bin/app-server.rs"
+
+[[bin]]
+name = "indexer"
+path = "bin/app-indexer.rs"
+
+[workspace]
+members = ["libs/*", "migration"]
+
 [dependencies]
-alloy = { version = "1.0.24", features = ["full"] }
-clap = { version = "4.5.45", features = ["derive", "env"] }
-const-hex = "1.14.1"
 env_logger = "0.11.8"
-futures-util = "0.3.31"
 log = "0.4.27"
-serde = "1.0.219"
-serde_json = "1.0.142"
-thiserror = "2.0.15"
 tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
-twelf = { version = "0.15.0", features = ["yaml"] }
-sea-orm = { version = "1.1.14", features = [ "sqlx-sqlite",  "runtime-tokio-native-tls", "macros" ] }
-futures = "0.3.31"
-alloy-rpc-types-eth = "1.0.24"
+utils = { version = "0.1.0", path = "libs/utils" }
+orm = { version = "0.1.0", path = "libs/orm" }
+api = { version = "0.1.0", path = "libs/api" }
+indexer = { version = "0.1.0", path = "libs/indexer" }
