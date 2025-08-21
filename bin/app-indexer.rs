@@ -1,5 +1,6 @@
 use indexer::indexer;
-use utils::{cmd, config, result::AppResult};
+use utils::{cmd, result::AppResult};
+use config::{self, Load};
 
 use std::{path::PathBuf, str::FromStr};
 
@@ -9,7 +10,7 @@ use log::LevelFilter;
 #[tokio::main]
 async fn main() -> AppResult<()> {
     let args = cmd::parse();
-    let cfg = config::load(PathBuf::from(args.config_path))?;
+    let cfg: config::indexer::Config = Load::load(PathBuf::from(args.config_path))?;
 
     let level = LevelFilter::from_str(&cfg.log.level).expect("failed to parse the log level");
 

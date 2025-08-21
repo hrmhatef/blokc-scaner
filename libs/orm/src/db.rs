@@ -1,7 +1,8 @@
 use crate::entities::prelude::*;
 use crate::entities::{blocks, events, transactions};
 
-use utils::{config, result::AppResult};
+use utils::result::AppResult;
+use config;
 
 use std::sync::Arc;
 

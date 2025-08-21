@@ -23,3 +23,5 @@ utils = { version = "0.1.0", path = "libs/utils" }
 orm = { version = "0.1.0", path = "libs/orm" }
 api = { version = "0.1.0", path = "libs/api" }
 indexer = { version = "0.1.0", path = "libs/indexer" }
+serde = "1.0.219"
+config = { version = "0.1.0", path = "libs/config" }

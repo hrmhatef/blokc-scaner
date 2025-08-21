@@ -26,4 +26,7 @@ pub enum Error {
 
     #[error(transparent)]
     IoError(#[from] std::io::Error),
+
+    #[error("Invalid port number, is should be in 4000-65535")]
+    InvalidPortNumber,
 }

@@ -3,7 +3,8 @@ use orm::{
     entities::prelude::*,
     entities::{blocks, events, transactions},
 };
-use utils::{config, error::Error, result::AppResult};
+use utils::{error::Error, result::AppResult};
+use config;
 
 use std::str::FromStr;
 
@@ -207,7 +208,7 @@ sol! {
    event Transfer(address indexed from, address indexed to, uint value);
 }
 
-pub async fn run(cfg: config::Indexer, db_connection: db::DB) -> AppResult<()> {
+pub async fn run(cfg: config::indexer::Indexer, db_connection: db::DB) -> AppResult<()> {
     let ws = WsConnect::new(cfg.rpc_url.clone());
     let provider = ProviderBuilder::new().connect_ws(ws).await?;
     log::info!("Connect to RPC node: {:}", cfg.rpc_url);

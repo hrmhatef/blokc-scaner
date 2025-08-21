@@ -13,3 +13,4 @@ serde = "1.0.219"
 utils = { version = "0.1.0", path = "../utils" }
 orm = { version = "0.1.0", path = "../orm" }
 sea-orm = "1.1.14"
+config = { version = "0.1.0", path = "../config" }

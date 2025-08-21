@@ -1,7 +1,8 @@
 use crate::graphql::schema::{GraphQLSchema, build_schema};
 
 use orm::db;
-use utils::{config, result::AppResult};
+use utils::result::AppResult;
+use config;
 
 use std::sync::Arc;
 
@@ -16,7 +17,7 @@ use axum::{
 
 /// Dependencies needed by the resolvers
 pub struct Context {
-    pub config: config::API,
+    pub config: config::server::Api,
 
     /// The database connections
     pub db: Arc<db::DB>,
@@ -25,7 +26,7 @@ pub struct Context {
 /// Intialize dependencies
 impl Context {
     /// Create a new set of dependencies based on the given shared resources
-    pub async fn init(config: config::API, db_connection: Arc<db::DB>) -> AppResult<Self> {
+    pub async fn init(config: config::server::Api, db_connection: Arc<db::DB>) -> AppResult<Self> {
         Ok(Self {
             config,
             db: db_connection,

@@ -8,6 +8,7 @@ edition = "2024"
 async-graphql = "7.0.17"
 async-graphql-axum = "7.0.17"
 axum = "0.8.4"
+config = { version = "0.1.0", path = "../config" }
 log = "0.4.27"
 orm = { version = "0.1.0", path = "../orm" }
 tokio = "1.47.1"

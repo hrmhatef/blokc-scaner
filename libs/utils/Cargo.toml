@@ -8,7 +8,7 @@ edition = "2024"
 [dependencies]
 thiserror = "2.0.15"
 clap = { version = "4.5.45", features = ["derive", "env"] }
-twelf = { version = "0.15.0", features = ["yaml"] }
+twelf = "0.15.0"
 serde = "1.0.219"
 const-hex = "1.14.1"
 alloy-rpc-types-eth = "1.0.24"
