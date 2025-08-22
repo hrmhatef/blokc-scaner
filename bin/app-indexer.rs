@@ -1,6 +1,6 @@
+use config::{self, Load};
 use indexer::indexer;
 use utils::{cmd, result::AppResult};
-use config::{self, Load};
 
 use std::{path::PathBuf, str::FromStr};
 

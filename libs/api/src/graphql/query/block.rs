@@ -9,7 +9,7 @@ pub struct BlockQuery;
 
 #[Object]
 impl BlockQuery {
-	// returns all events based on the provided blockNumber
+    // returns all events based on the provided blockNumber
     async fn blocks(&self, ctx: &Context<'_>, block_number: i64) -> Result<BlocksInfo> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
 
@@ -18,7 +18,7 @@ impl BlockQuery {
         Ok(BlocksInfo { data: res })
     }
 
-	// returns all events which is the address is equal with From or To
+    // returns all events which is the address is equal with From or To
     async fn blocks_by_address(&self, ctx: &Context<'_>, address: String) -> Result<BlocksInfo> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
 
@@ -27,7 +27,7 @@ impl BlockQuery {
         Ok(BlocksInfo { data: res })
     }
 
-	// returns all events which is the address is in same place of From and To 
+    // returns all events which is the address is in same place of From and To
     async fn circular_trnasactions(
         &self,
         ctx: &Context<'_>,
@@ -40,14 +40,14 @@ impl BlockQuery {
         Ok(BlocksInfo { data: res })
     }
 
-	// return total blocks stored on the DB
+    // return total blocks stored on the DB
     async fn total_blocks(&self, ctx: &Context<'_>) -> Result<u64> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
 
         Ok(get_total_blocks(db.clone()).await?)
     }
 
-	// returns total events of the DB
+    // returns total events of the DB
     async fn total_events(&self, ctx: &Context<'_>) -> Result<u64> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();
 

@@ -1,10 +1,10 @@
+use config;
 use orm::{
     db,
     entities::prelude::*,
     entities::{blocks, events, transactions},
 };
 use utils::{error::Error, result::AppResult};
-use config;
 
 use std::str::FromStr;
 

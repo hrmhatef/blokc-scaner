@@ -8,7 +8,9 @@ use std::path::PathBuf;
 use serde::{Deserialize, Serialize};
 
 pub trait Load {
-    fn load(path: PathBuf) -> AppResult<Self> where Self: Sized;
+    fn load(path: PathBuf) -> AppResult<Self>
+    where
+        Self: Sized;
 }
 
 pub trait IsValid {

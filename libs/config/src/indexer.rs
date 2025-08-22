@@ -1,4 +1,4 @@
-use crate::{Database, Log, Load};
+use crate::{Database, Load, Log};
 
 use utils::result::AppResult;
 
@@ -23,8 +23,12 @@ pub struct Indexer {
 }
 
 impl Load for Config {
-    fn load(path: PathBuf) -> AppResult<Self> where Self: Sized {
-        let conf = Config::with_layers(&[Layer::Yaml(path), Layer::Env(Some(String::from("APP_")))])?;
+    fn load(path: PathBuf) -> AppResult<Self>
+    where
+        Self: Sized,
+    {
+        let conf =
+            Config::with_layers(&[Layer::Yaml(path), Layer::Env(Some(String::from("APP_")))])?;
         Ok(conf)
     }
 }

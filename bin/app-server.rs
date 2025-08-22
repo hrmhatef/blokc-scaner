@@ -1,6 +1,6 @@
 use api::server;
+use config::{self, IsValid, Load};
 use utils::{cmd, result::AppResult};
-use config::{self, Load, IsValid};
 
 use std::{path::PathBuf, str::FromStr, sync::Arc};
 
@@ -10,7 +10,7 @@ use log::LevelFilter;
 #[tokio::main]
 async fn main() -> AppResult<()> {
     let args = cmd::parse();
-    let cfg : config::server::Config = Load::load(PathBuf::from(args.config_path))?;
+    let cfg: config::server::Config = Load::load(PathBuf::from(args.config_path))?;
 
     let level = LevelFilter::from_str(&cfg.log.level).expect("failed to parse the log level");
 

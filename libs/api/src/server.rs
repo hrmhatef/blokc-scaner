@@ -1,8 +1,8 @@
 use crate::graphql::schema::{GraphQLSchema, build_schema};
 
+use config;
 use orm::db;
 use utils::result::AppResult;
-use config;
 
 use std::sync::Arc;
 
