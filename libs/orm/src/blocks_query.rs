@@ -75,7 +75,7 @@ pub async fn blocks_by_filter(db: Arc<DB>, block_number: i64) -> AppResult<Vec<B
             event_info: EventInfo {
                 to: event_info.to.clone(),
                 from: event_info.from.clone(),
-                value: event_info.from.clone(),
+                value: event_info.value.clone(),
             },
             ..Default::default()
         };
