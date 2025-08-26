@@ -18,6 +18,13 @@ impl BlockQuery {
         Ok(BlocksInfo { data: res })
     }
 
+    // returns an array of the block_number from the DB
+    async fn block_numbers(&self, ctx: &Context<'_>) -> Result<Vec<i64>> {
+        let db = ctx.data_unchecked::<Arc<db::DB>>();
+
+        Ok(get_block_numbers(db.clone()).await?)
+    }
+
     // returns all events which is the address is equal with From or To
     async fn blocks_by_address(&self, ctx: &Context<'_>, address: String) -> Result<BlocksInfo> {
         let db = ctx.data_unchecked::<Arc<db::DB>>();

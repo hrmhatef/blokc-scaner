@@ -7,7 +7,7 @@ use utils::result::AppResult;
 use std::sync::Arc;
 
 use async_graphql::SimpleObject;
-use sea_orm::{Condition, QueryOrder, prelude::*};
+use sea_orm::{Condition, QueryOrder, prelude::*, query::*};
 use serde::{Deserialize, Serialize};
 
 pub struct BlockFilters {
@@ -194,4 +194,22 @@ pub async fn get_circular_transactions(
     }
 
     Ok(result)
+}
+
+#[derive(Copy, Clone, Debug, EnumIter, DeriveColumn)]
+enum QueryAs {
+    BlockNumber,
+}
+
+pub async fn get_block_numbers(
+    db: Arc<DB>,
+) -> AppResult<Vec<i64>> {
+    let res = Blocks::find()
+        .select_only()
+        .column_as(blocks::Column::BlockNumber, QueryAs::BlockNumber)
+        .into_values::<i64, QueryAs>()
+        .all(db.get_connection())
+        .await?;
+
+    Ok(res)
 }

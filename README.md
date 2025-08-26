@@ -66,6 +66,7 @@ type EventInfo {
 
 type Query {
   blocks(blockNumber: Int!): BlocksInfo!
+  blockNumbers: [Int!]!
   blocksByAddress(address: String!): BlocksInfo!
   circularTrnasactions(address: String!): BlocksInfo!
   totalBlocks: Int!
@@ -408,6 +409,8 @@ type Query {
 ```c++
 	// returns all events based on the provided blockNumber
 	blocks(blockNumber: int) BlocksInfo
+  // returns an array of the block_number from the DB
+  block_numbers() -> [int] {
 	// returns all events which is the address is equal with From or To
 	blocksByAddress(address: string) BlocksInfo
 	// returns all events which is the address is in same place of From and To 
